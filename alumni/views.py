@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
-from accounts.forms import DEPARTMENT_CHOICES
+from accounts.forms import RegisterForm
 from accounts.models import User
 
 
@@ -56,7 +56,7 @@ def alumni_list(request):
         .order_by("-graduation_year")
     )
 
-    department_options = list(DEPARTMENT_CHOICES)
+    department_options = list(RegisterForm.DEPARTMENT_CHOICES)
 
     paginator = Paginator(alumni_qs, 6)
     page_obj = paginator.get_page(request.GET.get("page", 1))

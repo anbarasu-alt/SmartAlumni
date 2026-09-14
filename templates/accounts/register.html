@@ -26,132 +26,30 @@
             </div>
 
             {% if form.non_field_errors %}
-                <div class="register-error">{{ form.non_field_errors }}</div>
+                <div class="register-error">
+                    {{ form.non_field_errors }}
+                </div>
             {% endif %}
 
-            <form method="POST" enctype="multipart/form-data" class="register-form" id="register-form">
+            <form method="POST" enctype="multipart/form-data" class="register-form">
                 {% csrf_token %}
 
                 <div class="form-grid">
-                    <div class="register-field">
-                        <label for="{{ form.first_name.id_for_label }}">First Name <span class="required">*</span></label>
-                        {{ form.first_name }}
-                        {% for error in form.first_name.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field">
-                        <label for="{{ form.last_name.id_for_label }}">Last Name <span class="required">*</span></label>
-                        {{ form.last_name }}
-                        {% for error in form.last_name.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field">
-                        <label for="{{ form.email.id_for_label }}">Email <span class="required">*</span></label>
-                        {{ form.email }}
-                        {% for error in form.email.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field">
-                        <label for="{{ form.department.id_for_label }}">Department <span class="required">*</span></label>
-                        {{ form.department }}
-                        {% for error in form.department.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field">
-                        <label for="{{ form.phone.id_for_label }}">Phone Number <span class="required">*</span></label>
-                        {{ form.phone }}
-                        {% for error in form.phone.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field">
-                        <label for="{{ form.role.id_for_label }}">Account Type <span class="required">*</span></label>
-                        {{ form.role }}
-                        {% for error in form.role.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field current-job-field" id="current-job-wrapper" style="display:none;">
-                        <label for="{{ form.current_job.id_for_label }}">Current Job <span class="required">*</span></label>
-                        {{ form.current_job }}
-                        {% for error in form.current_job.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field">
-                        <label for="{{ form.password1.id_for_label }}">Password <span class="required">*</span></label>
-                        {{ form.password1 }}
-                        {% for error in form.password1.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field">
-                        <label for="{{ form.password2.id_for_label }}">Confirm Password <span class="required">*</span></label>
-                        {{ form.password2 }}
-                        {% for error in form.password2.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field">
-                        <label for="{{ form.graduation_year.id_for_label }}">Graduation Year</label>
-                        {{ form.graduation_year }}
-                        {% for error in form.graduation_year.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field full-width">
-                        <label for="{{ form.profile_picture.id_for_label }}">Profile Picture</label>
-                        {{ form.profile_picture }}
-                        {% for error in form.profile_picture.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field full-width">
-                        <label for="{{ form.bio.id_for_label }}">Bio</label>
-                        {{ form.bio }}
-                        {% for error in form.bio.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field full-width">
-                        <label for="{{ form.skills.id_for_label }}">Skills</label>
-                        {{ form.skills }}
-                        {% for error in form.skills.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-
-                    <div class="register-field">
-                        <label for="{{ form.linkedin.id_for_label }}">LinkedIn</label>
-                        {{ form.linkedin }}
-                        {% for error in form.linkedin.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-                    <div class="register-field">
-                        <label for="{{ form.github.id_for_label }}">GitHub</label>
-                        {{ form.github }}
-                        {% for error in form.github.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
-                    <div class="register-field full-width">
-                        <label for="{{ form.portfolio.id_for_label }}">Portfolio</label>
-                        {{ form.portfolio }}
-                        {% for error in form.portfolio.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
-                    </div>
+                    {% for field in form %}
+                        <div class="register-field {% if field.name == 'bio' or field.name == 'skills' or field.name == 'profile_picture' %}full-width{% endif %}">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+                            {% for error in field.errors %}<div class="field-error">{{ error }}</div>{% endfor %}
+                        </div>
+                    {% endfor %}
                 </div>
 
-                {{ form.username }}
                 <button type="submit" class="create-account-button">Create Account</button>
             </form>
 
             <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login to your account</a></p>
         </section>
     </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const role = document.getElementById('id_role');
-            const wrapper = document.getElementById('current-job-wrapper');
-            const job = document.getElementById('id_current_job');
-
-            function updateCurrentJob() {
-                const isAlumni = role && role.value === 'ALUMNI';
-                wrapper.style.display = isAlumni ? '' : 'none';
-                job.required = isAlumni;
-                if (!isAlumni) job.value = '';
-            }
-
-            role.addEventListener('change', updateCurrentJob);
-            updateCurrentJob();
-        });
-    </script>
 </body>
 </html>

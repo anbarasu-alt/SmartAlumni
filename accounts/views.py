@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .forms import RegisterForm, UserUpdateForm
-from .google_sheets import send_registration_to_google_sheet
 
 
 def register(request):
@@ -16,26 +15,9 @@ def register(request):
 
         if form.is_valid():
             user = form.save()
-
-            # Store the non-sensitive registration details in Google Sheets.
-            # Passwords are never sent to Google Sheets.
-            sheet_ok, sheet_message = send_registration_to_google_sheet(user)
-
             login(request, user)
 
-            if sheet_ok:
-                messages.success(
-                    request,
-                    "Registration successful. Your registration details were stored successfully."
-                )
-            else:
-                # Do not block account creation if the external sheet is temporarily unavailable.
-                messages.warning(
-                    request,
-                    "Registration successful, but Google Sheets could not be updated right now."
-                )
-                print(f"Google Sheets registration error: {sheet_message}")
-
+            messages.success(request, "Registration successful.")
             return redirect("home")
     else:
         form = RegisterForm()
@@ -88,17 +70,3 @@ def edit_profile(request):
             "form": form,
         },
     )
-
-@login_required
-def settings_view(request):
-    """Account settings page for updating the signed-in user's profile."""
-    if request.method == "POST":
-        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Settings updated successfully.")
-            return redirect("settings")
-    else:
-        form = UserUpdateForm(instance=request.user)
-
-    return render(request, "accounts/settings.html", {"form": form})

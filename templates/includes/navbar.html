@@ -24,7 +24,6 @@
             {% if user.is_authenticated %}
             <ul class="navbar-nav sa-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Dashboard</a></li>
-                {% if user.role == 'ADMIN' or user.is_superuser %}<li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Admin</a></li>{% endif %}
                 <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'alumni_list' or request.resolver_match.url_name == 'alumni_detail' %}active{% endif %}" href="{% url 'alumni_list' %}">Alumni</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'jobs:job_list' %}">Jobs</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'mentorship_list' %}">Mentorship</a></li>
@@ -38,7 +37,6 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
-                        <li><a class="dropdown-item" href="{% url 'settings' %}">⚙ Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="post" action="{% url 'logout' %}" class="px-3 py-1">

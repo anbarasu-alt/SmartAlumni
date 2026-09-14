@@ -3,16 +3,17 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="container mt-4 pb-5">
+<div class="container mt-4">
+
     <div class="mb-4">
         <h2>Welcome to SSS College</h2>
         <p class="text-muted">Your dashboard updates from live database data.</p>
     </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-md-4"><div class="card text-center shadow-sm h-100"><div class="card-body"><div class="fs-2">🎓</div><h6>Alumni</h6><h2>{{ alumni_count }}</h2></div></div></div>
-        <div class="col-md-4"><div class="card text-center shadow-sm h-100"><div class="card-body"><div class="fs-2">👨‍🎓</div><h6>Students</h6><h2>{{ student_count }}</h2></div></div></div>
-        <div class="col-md-4"><div class="card text-center shadow-sm h-100"><div class="card-body"><div class="fs-2">💼</div><h6>Jobs</h6><h2>{{ job_count }}</h2></div></div></div>
+    <div class="row">
+        <div class="col-md-3 mb-3"><div class="card text-center shadow-sm"><div class="card-body"><h6>Alumni</h6><h2>{{ alumni_count }}</h2></div></div></div>
+        <div class="col-md-3 mb-3"><div class="card text-center shadow-sm"><div class="card-body"><h6>Students</h6><h2>{{ student_count }}</h2></div></div></div>
+        <div class="col-md-3 mb-3"><div class="card text-center shadow-sm"><div class="card-body"><h6>Jobs</h6><h2>{{ job_count }}</h2></div></div></div>
     </div>
 
     {% if role == "STUDENT" %}
@@ -27,20 +28,6 @@
         <div class="col-md-4"><div class="alert alert-info">Pending Mentorships: <strong>{{ mentorship_requests_count }}</strong></div></div>
     </div>
     {% endif %}
-
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <h5 class="mb-3">Quick Access</h5>
-            <div class="row g-3">
-                <div class="col-6 col-md-4 col-lg-2"><a class="text-decoration-none" href="{% url 'alumni_list' %}"><div class="dashboard-icon-card"><span>🎓</span><strong>Alumni</strong></div></a></div>
-                <div class="col-6 col-md-4 col-lg-2"><a class="text-decoration-none" href="{% url 'student_list' %}"><div class="dashboard-icon-card"><span>👨‍🎓</span><strong>Student</strong></div></a></div>
-                <div class="col-6 col-md-4 col-lg-2"><a class="text-decoration-none" href="{% url 'jobs:job_list' %}"><div class="dashboard-icon-card"><span>💼</span><strong>Job</strong></div></a></div>
-                <div class="col-6 col-md-4 col-lg-2"><a class="text-decoration-none" href="{% url 'mentorship_list' %}"><div class="dashboard-icon-card"><span>🤝</span><strong>Mentorship</strong></div></a></div>
-                <div class="col-6 col-md-4 col-lg-2"><a class="text-decoration-none" href="{% url 'post_list' %}"><div class="dashboard-icon-card"><span>💬</span><strong>Forum</strong></div></a></div>
-                <div class="col-6 col-md-4 col-lg-2"><a class="text-decoration-none" href="{% url 'settings' %}"><div class="dashboard-icon-card"><span>⚙️</span><strong>Settings</strong></div></a></div>
-            </div>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-lg-6 mb-4">
@@ -58,13 +45,16 @@
                 </div>
             </div>
         </div>
+
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a class="btn btn-primary" href="{% url 'alumni_list' %}">Alumni Directory</a>
+        {% if role != "STUDENT" %}<a class="btn btn-outline-primary" href="{% url 'student_list' %}">Students</a>{% endif %}
+        <a class="btn btn-outline-success" href="{% url 'jobs:job_list' %}">Jobs</a>
+        <a class="btn btn-outline-info" href="{% url 'mentorship_list' %}">Mentorship</a>
+        <a class="btn btn-outline-dark" href="{% url 'post_list' %}">Forum</a>
+        <a class="btn btn-outline-danger" href="{% url 'notification_list' %}">Notifications{% if unread_count %} ({{ unread_count }}){% endif %}</a>
     </div>
 </div>
-
-<style>
-.dashboard-icon-card { min-height: 125px; border: 1px solid #e6e9ef; border-radius: 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:#082b55; background:#fff; transition:all .2s ease; }
-.dashboard-icon-card span { font-size:32px; line-height:1; }
-.dashboard-icon-card strong { font-size:13px; }
-.dashboard-icon-card:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(13,40,70,.10); border-color:#cbd5e1; }
-</style>
 {% endblock %}
