@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container mt-4 pb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div><h2 class="mb-1">Admin Dashboard</h2><p class="text-muted mb-0">Full system management</p></div>
+        <a class="btn btn-primary" href="{% url 'admin_user_add' %}">+ Add User</a>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3"><div class="card shadow-sm h-100"><div class="card-body text-center"><div class="fs-2">👑</div><h3>{{ total_admins }}</h3><small>Admins</small></div></div></div>
+        <div class="col-6 col-md-3"><div class="card shadow-sm h-100"><div class="card-body text-center"><div class="fs-2">🎓</div><h3>{{ total_alumni }}</h3><small>Alumni</small></div></div></div>
+        <div class="col-6 col-md-3"><div class="card shadow-sm h-100"><div class="card-body text-center"><div class="fs-2">👨‍🎓</div><h3>{{ total_students }}</h3><small>Students</small></div></div></div>
+        <div class="col-6 col-md-3"><div class="card shadow-sm h-100"><div class="card-body text-center"><div class="fs-2">💼</div><h3>{{ total_jobs }}</h3><small>Jobs</small></div></div></div>
+    </div>
+    <div class="card shadow-sm mb-4"><div class="card-body"><div class="row g-2">
+        <div class="col-md-3"><a class="btn btn-outline-primary w-100" href="{% url 'alumni_list' %}">Manage Alumni</a></div>
+        <div class="col-md-3"><a class="btn btn-outline-primary w-100" href="{% url 'student_list' %}">Manage Students</a></div>
+        <div class="col-md-3"><a class="btn btn-outline-primary w-100" href="{% url 'jobs:job_list' %}">Manage Jobs</a></div>
+        <div class="col-md-3"><a class="btn btn-outline-primary w-100" href="/admin/">Django Admin</a></div>
+    </div></div></div>
+    <form method="get" class="mb-3"><div class="input-group"><input class="form-control" name="search" value="{{ search }}" placeholder="Search users..."><button class="btn btn-primary">Search</button></div></form>
+    <div class="card shadow-sm"><div class="card-header fw-bold">All Users</div><div class="table-responsive"><table class="table table-hover mb-0 align-middle"><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+    {% for person in users %}<tr><td><strong>{{ person.get_full_name|default:person.username }}</strong><br><small class="text-muted">@{{ person.username }}</small></td><td>{{ person.email|default:"—" }}</td><td><span class="badge text-bg-{% if person.role == 'ADMIN' %}dark{% elif person.role == 'ALUMNI' %}primary{% else %}secondary{% endif %}">{{ person.get_role_display }}</span></td><td>{% if person.is_active %}<span class="text-success">Active</span>{% else %}<span class="text-danger">Disabled</span>{% endif %}</td><td><a class="btn btn-sm btn-outline-primary" href="{% url 'admin_user_edit' person.pk %}">Edit</a>{% if person.pk != request.user.pk %}<form method="post" action="{% url 'admin_user_delete' person.pk %}" class="d-inline" onsubmit="return confirm('Delete this user?');">{% csrf_token %}<button class="btn btn-sm btn-outline-danger">Delete</button></form>{% endif %}</td></tr>
+    {% empty %}<tr><td colspan="5" class="text-center text-muted">No users found.</td></tr>{% endfor %}
+    </tbody></table></div></div>
+</div>
+{% endblock %}
