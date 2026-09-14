@@ -5,11 +5,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-change-this-secret-key")
+# SECURITY
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "dev-only-change-this-secret-key"
+)
 
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv(
+        "DJANGO_ALLOWED_HOSTS",
+        "127.0.0.1,localhost"
+    ).split(",")
+    if host.strip()
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "CSRF_TRUSTED_ORIGINS",
+        ""
+    ).split(",")
+    if origin.strip()
+]
 
 
 # APPLICATIONS
@@ -141,12 +161,11 @@ LOGOUT_REDIRECT_URL = "/"
 # ==============================
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = "anbarasubsccs2006@gmail.com"
-EMAIL_HOST_PASSWORD = "vzya dtim orgt ylju"
+EMAIL_HOST_USER = os.getenv("anbarasubsccs2006@gmail.com","")
+EMAIL_HOST_PASSWORD = os.getenv("vzya dtim orgt ylju","")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
