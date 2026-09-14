@@ -5,29 +5,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY
+# SECURITY
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY",
     "dev-only-change-this-secret-key"
 )
 
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv(
-        "smartalumni-1.onrender.com",
-        "127.0.0.1,localhost"
-    ).split(",")
-    if host.strip()
+    "smartalumni-1.onrender.com",
+    "localhost",
+    "127.0.0.1",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv(
-        "https://smartalumni-1.onrender.com",
-        ""
-    ).split(",")
-    if origin.strip()
+    "https://smartalumni-1.onrender.com",
 ]
 
 
