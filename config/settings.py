@@ -122,12 +122,22 @@ WSGI_APPLICATION = "config.wsgi.application"
 import os
 import dj_database_url
 
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("postgresql://smartalumni_db_user:GqnO9lbaCbL357ewMvK5yIjScb5CwKHi@dpg-dak08lek1f9s739m5clg-a/smartalumni_db"),
-        conn_max_age=600,
-    )
-}
+if os.getenv("postgresql://smartalumni_db_user:GqnO9lbaCbL357ewMvK5yIjScb5CwKHi@dpg-dak08lek1f9s739m5clg-a.oregon-postgres.render.com/smartalumni_db"):
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=os.getenv("postgresql://smartalumni_db_user:GqnO9lbaCbL357ewMvK5yIjScb5CwKHi@dpg-dak08lek1f9s739m5clg-a.oregon-postgres.render.com/smartalumni_db"),
+            conn_max_age=600,
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
+    BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
