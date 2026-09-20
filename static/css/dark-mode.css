@@ -87,3 +87,66 @@ body,
 .list-group-item {
     transition: background-color .2s ease, color .2s ease, border-color .2s ease;
 }
+
+
+/* ---------- Global component theming ---------- */
+html.dark-mode .sa-navbar {
+    background: #181818 !important;
+    border-bottom-color: #333 !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,.35) !important;
+}
+html.dark-mode .sa-brand,
+html.dark-mode .sa-nav .nav-link,
+html.dark-mode .sa-bell {
+    color: var(--sa-text) !important;
+}
+html.dark-mode .sa-nav .nav-link:hover,
+html.dark-mode .sa-nav .nav-link.active {
+    color: #ffffff !important;
+    border-bottom-color: #ffffff !important;
+}
+html.dark-mode .sa-avatar {
+    background: #303030 !important;
+    color: #ffffff !important;
+}
+html.dark-mode .sa-profile-menu .dropdown-menu {
+    background: var(--sa-surface) !important;
+    border-color: var(--sa-border) !important;
+}
+html.dark-mode .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+html.dark-mode .navbar-toggler {
+    border-color: var(--sa-border) !important;
+}
+html.dark-mode .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Login page (index.html) */
+html.dark-mode .login-page {
+    background: #101010 !important;
+    color: var(--sa-text) !important;
+}
+html.dark-mode .login-form-panel {
+    background: #1e1e1e !important;
+    color: var(--sa-text) !important;
+}
+html.dark-mode .login-form-panel h1,
+html.dark-mode .login-description,
+html.dark-mode .login-field label,
+html.dark-mode .login-register {
+    color: var(--sa-text) !important;
+}
+html.dark-mode .login-input {
+    background: #2a2a2a !important;
+    color: #ffffff !important;
+    border-color: #444 !important;
+}
+html.dark-mode .login-input::placeholder {
+    color: #aaa !important;
+}
+html.dark-mode .login-forgot,
+html.dark-mode .login-register a {
+    color: #8ec5ff !important;
+}

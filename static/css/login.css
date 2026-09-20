@@ -250,3 +250,23 @@
         min-height: 190px;
     }
 }
+
+.login-theme-toggle {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    z-index: 5;
+    border: 1px solid #d9dee7;
+    background: rgba(255,255,255,.9);
+    color: #243447;
+    border-radius: 999px;
+    padding: 7px 11px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.login-form-panel { position: relative; }
+html.dark-mode .login-theme-toggle {
+    background: #292929;
+    color: #fff;
+    border-color: #444;
+}

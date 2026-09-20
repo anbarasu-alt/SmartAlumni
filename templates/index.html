@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSS College - Login</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dark-mode.css' %}">
 </head>
 <body class="login-page">
     <main class="login-card" aria-label="SSS College login">
@@ -17,6 +18,10 @@
         </section>
 
         <section class="login-form-panel">
+            <button type="button" class="dark-mode-toggle login-theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
+                <span class="theme-icon" aria-hidden="true">🌙</span>
+                <span class="theme-text">Dark Mode</span>
+            </button>
             <div class="login-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
                     <path d="M3 8.5 12 4l9 4.5-9 4.5L3 8.5Z"></path>
@@ -69,5 +74,6 @@
             <p class="login-register">Don't have an account? <a href="{% url 'register' %}">Register</a></p>
         </section>
     </main>
+    <script src="{% static 'js/dark-mode.js' %}"></script>
 </body>
 </html>

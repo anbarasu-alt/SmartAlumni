@@ -60,3 +60,23 @@ python manage.py runserver
 5. User enters both OTPs on `/accounts/verify-otp/`.
 6. Only after both are correct does the account become active and the user is logged in.
 7. OTPs expire after 10 minutes and are limited to 5 failed attempts.
+
+
+## SSS College administrator
+
+The project includes a management command for the requested administrator account:
+
+```powershell
+python manage.py migrate
+python manage.py ensure_college_admin
+```
+
+Administrator login:
+- Username: `SSSCOLLEGE`
+- Password: `SSS@555`
+
+The command creates the account if it does not exist, or updates the existing `SSSCOLLEGE` account.
+
+## Dark / Light mode
+
+A Dark Mode / Light Mode toggle is available from the navigation bar and login page. The selected theme is saved in the browser, so it remains selected when moving between pages.

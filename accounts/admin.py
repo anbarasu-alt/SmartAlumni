@@ -118,3 +118,8 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
+
+# SSS College admin-site branding
+admin.site.site_header = "SSSCOLLEGE Administration"
+admin.site.site_title = "SSSCOLLEGE Admin"
+admin.site.index_title = "SSS College Management"

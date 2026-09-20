@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from accounts.models import User
 from jobs.models import Job, JobApplication
 from mentorship.models import MentorshipRequest
 from notifications.models import Notification
+from accounts.forms import AdminUserCreateForm
 
 
 @login_required
@@ -15,6 +17,7 @@ def dashboard(request):
         "alumni_count": User.objects.filter(role="ALUMNI").count(),
         "student_count": User.objects.filter(role="STUDENT").count(),
         "job_count": Job.objects.count(),
+        "admin_count": User.objects.filter(role="ADMIN").count(),
         "unread_count": Notification.objects.filter(
             user=user, is_read=False
         ).count(),
@@ -41,6 +44,56 @@ def dashboard(request):
     return render(request, "dashboard/dashboard.html", context)
 
 
+
+def _is_admin(user):
+    return user.is_authenticated and (
+        getattr(user, "is_superuser", False)
+        or str(getattr(user, "role", "")).upper() == "ADMIN"
+    )
+
+
 @login_required
 def admin_dashboard(request):
-    return dashboard(request)
+    """Admin dashboard. Only admins can access admin user-management actions."""
+    if not _is_admin(request.user):
+        messages.error(request, "Admin access is required.")
+        return redirect("home")
+
+    context = {
+        "total_users": User.objects.count(),
+        "total_alumni": User.objects.filter(role="ALUMNI").count(),
+        "total_students": User.objects.filter(role="STUDENT").count(),
+        "total_admins": User.objects.filter(role="ADMIN").count(),
+        "total_jobs": Job.objects.count(),
+        "total_mentorships": MentorshipRequest.objects.count(),
+    }
+    return render(request, "dashboard/admin_dashboard.html", context)
+
+
+@login_required
+def admin_add_user(request):
+    """Admin-only account creation. This is the only UI path that can create admins."""
+    if not _is_admin(request.user):
+        messages.error(request, "Only an admin can add users.")
+        return redirect("home")
+
+    if request.method == "POST":
+        form = AdminUserCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            messages.success(
+                request,
+                f"{user.get_role_display()} account '{user.username}' created successfully."
+            )
+            return redirect("admin_dashboard")
+    else:
+        requested_role = str(request.GET.get("role", "STUDENT")).upper()
+        if requested_role not in {"STUDENT", "ALUMNI", "ADMIN"}:
+            requested_role = "STUDENT"
+        form = AdminUserCreateForm(initial={"role": requested_role})
+
+    return render(
+        request,
+        "dashboard/admin_user_form.html",
+        {"form": form, "title": "Add Student / Alumni / Admin"},
+    )

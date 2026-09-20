@@ -51,5 +51,34 @@
             <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login to your account</a></p>
         </section>
     </main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const role = document.getElementById("id_role");
+    const graduation = document.getElementById("id_graduation_year");
+    const currentJob = document.getElementById("id_current_job");
+
+    if (!role || !graduation || !currentJob) return;
+
+    const graduationBox = graduation.closest(".register-field, .col-md-6, .col-md-12") || graduation.parentElement;
+    const currentJobBox = currentJob.closest(".register-field, .col-md-6, .col-md-12") || currentJob.parentElement;
+
+    function toggleAlumniFields() {
+        const isAlumni = role.value === "ALUMNI";
+        graduationBox.style.display = isAlumni ? "" : "none";
+        currentJobBox.style.display = isAlumni ? "" : "none";
+        graduation.required = isAlumni;
+        currentJob.required = isAlumni;
+        if (!isAlumni) {
+            graduation.value = "";
+            currentJob.value = "";
+        }
+    }
+
+    role.addEventListener("change", toggleAlumniFields);
+    toggleAlumniFields();
+});
+</script>
+
 </body>
 </html>
